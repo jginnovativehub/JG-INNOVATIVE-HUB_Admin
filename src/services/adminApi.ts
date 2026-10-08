@@ -1511,6 +1511,18 @@ export const consultationsApi = {
       body: JSON.stringify({ processStage })
     });
     return { ...(res.data || res), id: (res.data || res)._id } as ConsultationBooking;
+  },
+  update: async (id: string, payload: any): Promise<ConsultationBooking> => {
+    const res = await apiRequestRaw(`/admin/consultations/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload)
+    });
+    return { ...(res.data || res), id: (res.data || res)._id } as ConsultationBooking;
+  },
+  delete: async (id: string): Promise<any> => {
+    return apiRequestRaw(`/admin/consultations/${id}`, {
+      method: 'DELETE'
+    });
   }
 };
 
@@ -1545,6 +1557,18 @@ export const projectBookingsApi = {
       body: JSON.stringify({ processStage })
     });
     return { ...(res.data || res), id: (res.data || res)._id } as any;
+  },
+  update: async (id: string, payload: any): Promise<any> => {
+    const res = await apiRequestRaw(`/admin/project-bookings/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload)
+    });
+    return { ...(res.data || res), id: (res.data || res)._id } as any;
+  },
+  delete: async (id: string): Promise<any> => {
+    return apiRequestRaw(`/admin/project-bookings/${id}`, {
+      method: 'DELETE'
+    });
   }
 };
 
