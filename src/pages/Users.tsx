@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { User, Ban, Trash2, Eye, MoreVertical, UserX, UserCheck } from 'lucide-react';
+import { exportToExcel } from '@/utils/exportToExcel';
+import { User, Ban, Trash2, Eye, MoreVertical, UserX, UserCheck, Download } from 'lucide-react';
 import SearchBar from '@/components/admin/SearchBar';
 import Table from '@/components/admin/Table';
 import Pagination from '@/components/admin/Pagination';
@@ -267,7 +268,8 @@ const Users: React.FC = () => {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-3">
-          <SearchBar
+          <button onClick={() => exportToExcel(state.users || [], 'users')} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90 transition-colors"><Download className="w-4 h-4" /> Export to Excel</button>
+            <SearchBar
             placeholder="Search by name, email, or mobile..."
             value={searchQuery}
             onChange={setSearchQuery}
