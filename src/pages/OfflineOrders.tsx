@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Edit3, Plus, Trash2, Upload } from 'lucide-react';
+import { exportToExcel } from '@/utils/exportToExcel';
+import { Edit3, Plus, Trash2, Upload, Download } from 'lucide-react';
 import SearchBar from '@/components/admin/SearchBar';
 import Table from '@/components/admin/Table';
 import Pagination from '@/components/admin/Pagination';
@@ -467,7 +468,8 @@ const OfflineOrdersPage: React.FC = () => {
             <option key={status} value={status}>{ORDER_STATUS_LABELS[status]}</option>
           ))}
         </select>
-        <SearchBar placeholder="Search invoice, customer, phone…" value={searchQuery} onChange={setSearchQuery} className="sm:w-80" />
+        <button onClick={() => exportToExcel(state.offlineOrders || [], 'offlineOrders')} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90 transition-colors"><Download className="w-4 h-4" /> Export to Excel</button>
+            <SearchBar placeholder="Search invoice, customer, phone…" value={searchQuery} onChange={setSearchQuery} className="sm:w-80" />
       </div>
 
       <div className="overflow-x-auto">

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Save } from 'lucide-react';
+import { exportToExcel } from '@/utils/exportToExcel';
+import { Save, Download } from 'lucide-react';
 import SearchBar from '@/components/admin/SearchBar';
 import Table from '@/components/admin/Table';
 import { formatCurrency } from '@/utils/gstCalculator';
@@ -165,7 +166,8 @@ const ProfitManagement: React.FC = () => {
           <h1 className="page-header">Profit Management</h1>
           <p className="page-description">Track profit per product based on delivered orders.</p>
         </div>
-        <SearchBar
+        <button onClick={() => exportToExcel(state.payments || [], 'profits')} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90 transition-colors"><Download className="w-4 h-4" /> Export to Excel</button>
+            <SearchBar
           placeholder="Search by SKU or product..."
           value={searchQuery}
           onChange={setSearchQuery}

@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { Eye, MoreVertical, RefreshCw, CreditCard } from 'lucide-react';
+import { exportToExcel } from '@/utils/exportToExcel';
+import { Eye, MoreVertical, RefreshCw, CreditCard, Download } from 'lucide-react';
 import SearchBar from '@/components/admin/SearchBar';
 import Table from '@/components/admin/Table';
 import Pagination from '@/components/admin/Pagination';
@@ -342,7 +343,8 @@ const Orders: React.FC = () => {
               </option>
             ))}
           </select>
-          <SearchBar
+          <button onClick={() => exportToExcel(state.orders || [], 'orders')} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90 transition-colors"><Download className="w-4 h-4" /> Export to Excel</button>
+            <SearchBar
             placeholder="Search by ID or customer..."
             value={searchQuery}
             onChange={setSearchQuery}
