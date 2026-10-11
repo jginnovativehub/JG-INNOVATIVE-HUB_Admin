@@ -26,6 +26,12 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (email.trim().toLowerCase() !== 'admin@inovative-hub.com') {
+      setError('Invalid email or password');
+      return;
+    }
+
     setIsLoading(true);
 
     try {

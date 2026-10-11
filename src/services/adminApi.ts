@@ -43,8 +43,9 @@ const removeToken = (): void => localStorage.removeItem('adminToken');
 
 // Headers configuration
 const getHeaders = (includeAuth: boolean = true): HeadersInit => {
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    'x-admin-panel': 'main',
   };
   
   if (includeAuth) {
@@ -181,7 +182,7 @@ export const authApi = {
   login: async (credentials: LoginCredentials): Promise<LoginResponse> => {
     const res = await apiRequestRaw('/admin/login', {
       method: 'POST',
-      body: JSON.stringify(credentials),
+      body: JSON.stringify({ ...credentials, panel: 'main' }),
     });
     const merged = { ...res, ...(asRecord(res.data) || {}) } as Record<string, unknown>;
     const token = typeof merged.token === 'string' ? merged.token : undefined;

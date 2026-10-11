@@ -35,13 +35,22 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
         if (isValid) {
           const storedAdmin = localStorage.getItem('adminData');
           if (storedAdmin) {
-            setAdmin(JSON.parse(storedAdmin));
+            const parsed = JSON.parse(storedAdmin);
+            if (parsed?.email?.toLowerCase() === 'admin@inovative-hub.com') {
+              setAdmin(parsed);
+            } else {
+              await authApi.logout();
+              setAdmin(null);
+            }
           } else {
             const res = await authApi.getAdminProfile();
             const adminProfile = res?.admin || res?.data?.admin || res?.data || null;
-            if (adminProfile) {
+            if (adminProfile && adminProfile.email?.toLowerCase() === 'admin@inovative-hub.com') {
               setAdmin(adminProfile);
               localStorage.setItem('adminData', JSON.stringify(adminProfile));
+            } else {
+              await authApi.logout();
+              setAdmin(null);
             }
           }
         }
@@ -56,6 +65,13 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
   }, []);
 
   const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
+    if (credentials.email?.trim().toLowerCase() !== 'admin@inovative-hub.com') {
+      return {
+        success: false,
+        message: 'Invalid email or password',
+      };
+    }
+
     const response = await authApi.login(credentials);
 
     let adminUser = response.admin ?? null;
@@ -84,6 +100,14 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
 
     const resolved = adminUser ?? null;
     if (response.success && resolved) {
+      if (resolved.email?.toLowerCase() !== 'admin@inovative-hub.com') {
+        await authApi.logout();
+        return {
+          success: false,
+          message: 'Invalid email or password',
+        };
+      }
+
       flushSync(() => {
         setAdmin(resolved);
         localStorage.setItem('adminData', JSON.stringify(resolved));
